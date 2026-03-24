@@ -48,6 +48,42 @@ Every package extends `tsconfig.base.json` which sets `composite: true`. The roo
 - `pnpm run build` — runs `typecheck` first, then recursively runs `build` in all packages that define it
 - `pnpm run typecheck` — runs `tsc --build --emitDeclarationOnly` using project references
 
+## Basis Snap
+
+The `basis-snap/` directory (at the workspace root) is a standalone MetaMask Snap project with its own Yarn workspace. It is **not** part of the pnpm monorepo.
+
+```
+basis-snap/
+├── packages/
+│   ├── snap/              # @basis-protocol/snap — the MetaMask Snap
+│   │   ├── src/
+│   │   │   ├── index.tsx  # Entry points: onTransaction, onHomePage, onInstall, onCronjob
+│   │   │   ├── api.ts     # Basis API client (fetch + retry + error handling)
+│   │   │   ├── cache.ts   # snap_manageState wrapper (LRU, TTL)
+│   │   │   ├── config.ts  # Contract registry, thresholds, constants
+│   │   │   ├── decoder.ts # ERC-20 calldata decoder
+│   │   │   ├── types.ts   # TypeScript interfaces
+│   │   │   └── ui/        # JSX components for MetaMask Snaps UI
+│   │   ├── snap.manifest.json
+│   │   ├── snap.config.ts
+│   │   └── package.json
+│   └── site/              # Companion dApp for one-click install
+├── images/icon.svg
+├── package.json           # Yarn workspace root
+└── README.md
+```
+
+**To install and run:**
+```bash
+cd basis-snap
+yarn install
+yarn start       # starts MetaMask Flask dev server on port 8080
+yarn test        # run unit tests (decoder, grade formatting, etc.)
+yarn build:snap  # production bundle for npm publish
+```
+
+**API base:** `https://basis-deploy-guide.replit.app`
+
 ## Packages
 
 ### `artifacts/api-server` (`@workspace/api-server`)

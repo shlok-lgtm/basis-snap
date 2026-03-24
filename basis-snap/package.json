@@ -1,0 +1,22 @@
+{
+  "name": "basis-snap",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "yarn workspaces foreach --all --topological-dev run build",
+    "build:snap": "yarn workspace @basis-protocol/snap run build",
+    "start": "yarn workspace @basis-protocol/snap run start",
+    "test": "yarn workspace @basis-protocol/snap run test",
+    "lint": "yarn workspaces foreach --all run lint"
+  },
+  "devDependencies": {
+    "typescript": "~5.3.3"
+  },
+  "engines": {
+    "node": ">=18.6.0"
+  },
+  "packageManager": "yarn@3.2.1"
+}
