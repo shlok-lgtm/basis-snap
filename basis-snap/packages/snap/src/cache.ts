@@ -7,7 +7,7 @@ import {
   WALLET_CACHE_TTL_MS,
 } from "./config";
 
-const CACHE_VERSION = "1.0.0";
+const CACHE_VERSION = "1.1.0";
 
 function defaultState(): CachedState {
   return {
@@ -17,6 +17,7 @@ function defaultState(): CachedState {
       warningThreshold: DEFAULT_WARNING_THRESHOLD,
       criticalThreshold: DEFAULT_CRITICAL_THRESHOLD,
     },
+    contractRegistry: null,
     version: CACHE_VERSION,
   };
 }
@@ -109,4 +110,20 @@ export async function getPreviousScoreMap(): Promise<
   return Object.fromEntries(
     cached.data.stablecoins.map((s) => [s.id, s.score]),
   );
+}
+
+export async function getContractRegistry(): Promise<Record<
+  string,
+  string
+> | null> {
+  const state = await getState();
+  return state.contractRegistry ?? null;
+}
+
+export async function setContractRegistry(
+  registry: Record<string, string>,
+): Promise<void> {
+  const state = await getState();
+  state.contractRegistry = registry;
+  await setState(state);
 }

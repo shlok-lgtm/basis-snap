@@ -13,14 +13,16 @@ import {
 import {
   getCachedScores,
   getCachedWalletProfile,
+  getContractRegistry,
   getSettings,
   getState,
   getPreviousScoreMap,
   setCachedScores,
   setCachedWalletProfile,
+  setContractRegistry,
 } from "./cache";
 import {
-  STABLECOIN_CONTRACTS,
+  STATIC_STABLECOIN_CONTRACTS,
   SCORES_STALE_MAX_MS,
 } from "./config";
 import { decodeERC20Transfer } from "./decoder";
@@ -28,8 +30,13 @@ import { TransactionInsights } from "./ui/TransactionInsights";
 import { HomePage } from "./ui/HomePage";
 import type { StablecoinScore, WalletProfile, ScoresResponse } from "./types";
 
-function findStablecoinId(address: string): string | undefined {
-  return STABLECOIN_CONTRACTS[address.toLowerCase()];
+async function findStablecoinId(address: string): Promise<string | undefined> {
+  const dynamic = await getContractRegistry();
+  if (dynamic) {
+    const hit = dynamic[address.toLowerCase()];
+    if (hit) return hit;
+  }
+  return STATIC_STABLECOIN_CONTRACTS[address.toLowerCase()];
 }
 
 interface ResolvedScores {
@@ -65,14 +72,14 @@ export const onTransaction: OnTransactionHandler = async ({
   const toAddress: string = (transaction.to as string | undefined) ?? "";
   const data: string = (transaction.data as string | undefined) ?? "";
 
-  let stablecoinId: string | undefined = findStablecoinId(toAddress);
+  let stablecoinId: string | undefined = await findStablecoinId(toAddress);
   let counterparty: string = toAddress;
 
   if (data && data !== "0x") {
     const decoded = decodeERC20Transfer(data);
     if (decoded) {
       if (!stablecoinId) {
-        stablecoinId = findStablecoinId(toAddress);
+        stablecoinId = await findStablecoinId(toAddress);
       }
       counterparty = decoded.recipient;
     }
@@ -225,6 +232,16 @@ export const onCronjob: OnCronjobHandler = async ({ request }) => {
   }
 
   await setCachedScores(fresh);
+
+  const newRegistry: Record<string, string> = {};
+  for (const coin of fresh.stablecoins) {
+    if (coin.token_contract) {
+      newRegistry[coin.token_contract.toLowerCase()] = coin.id;
+    }
+  }
+  if (Object.keys(newRegistry).length > 0) {
+    await setContractRegistry(newRegistry);
+  }
 
   for (const msg of dropped) {
     await snap.request({
