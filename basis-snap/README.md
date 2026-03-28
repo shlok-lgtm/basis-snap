@@ -37,7 +37,7 @@ A MetaMask Snap that surfaces stablecoin quality intelligence and wallet risk pr
 
 ## API
 
-All data flows through the public Basis REST API at `https://basis-deploy-guide.replit.app`:
+All data flows through the public Basis REST API at `https://basisprotocol.xyz`:
 
 - `GET /api/scores` — all stablecoin SII scores
 - `GET /api/scores/{coin}` — detailed score breakdown

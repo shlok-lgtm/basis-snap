@@ -7,7 +7,7 @@
     "url": "https://github.com/basis-protocol/basis-snap.git"
   },
   "source": {
-    "shasum": "n/a",
+    "shasum": "nuw8wLLtoJW59c0pbmbDHj2lfKBAJo5tKMG9kq5SO1Q=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
@@ -39,5 +39,7 @@
     "snap_dialog": {},
     "snap_notify": {}
   },
+  "platformVersion": "6.24.0",
   "manifestVersion": "0.1"
 }
+

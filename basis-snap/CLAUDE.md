@@ -26,7 +26,7 @@ packages/
 - **No private key access**. The snap uses NO key management permissions.
 - **All data is read-only** from the public Basis API.
 - **Never block transactions** — if API is down and cache is empty, show info message only.
-- **API base**: `https://basis-deploy-guide.replit.app`
+- **API base**: `https://basisprotocol.xyz`
 
 ## Stablecoin Contract Registry
 
