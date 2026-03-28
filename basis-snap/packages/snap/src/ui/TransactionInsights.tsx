@@ -147,7 +147,7 @@ export function TransactionInsights({
       )}
 
       <Divider />
-      <Text>basisprotocol.xyz | {`SII v1.0.0`}</Text>
+      <Text>basis-deploy-guide.replit.app | {`SII v1.0.0`}</Text>
     </Box>
   );
 }

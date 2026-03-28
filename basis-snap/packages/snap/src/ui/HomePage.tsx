@@ -181,7 +181,7 @@ export function HomePage({
       )}
 
       <Divider />
-      <Link href="https://basisprotocol.xyz">
+      <Link href="https://basis-deploy-guide.replit.app">
         View full dashboard →
       </Link>
     </Box>

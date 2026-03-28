@@ -16,7 +16,6 @@ export interface StablecoinScore {
     structural: number;
   };
   computed_at: string;
-  token_contract?: string;
 }
 
 export interface ScoresResponse {
@@ -101,6 +100,5 @@ export interface CachedState {
   scores: CachedScores | null;
   walletProfiles: Record<string, CachedWalletProfile>;
   settings: CachedSettings;
-  contractRegistry: Record<string, string> | null;
   version: string;
 }

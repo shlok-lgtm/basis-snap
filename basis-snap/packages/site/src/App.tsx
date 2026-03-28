@@ -113,14 +113,14 @@ export default function App() {
         </p>
         <p>
           <a
-            href="https://basisprotocol.xyz"
+            href="https://basis-deploy-guide.replit.app"
             style={{ color: "#0066cc" }}
           >
             View full dashboard →
           </a>{" "}
           ·{" "}
           <a
-            href="https://basisprotocol.xyz/methodology"
+            href="https://basis-deploy-guide.replit.app/methodology"
             style={{ color: "#0066cc" }}
           >
             Methodology

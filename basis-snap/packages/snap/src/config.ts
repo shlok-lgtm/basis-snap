@@ -1,4 +1,4 @@
-export const API_BASE = "https://basisprotocol.xyz";
+export const API_BASE = "https://basis-deploy-guide.replit.app";
 export const API_TIMEOUT = 10_000;
 export const MAX_RETRIES = 2;
 export const RETRY_DELAY = 1_000;
@@ -9,8 +9,7 @@ export const DEFAULT_CRITICAL_THRESHOLD = 50;
 export const SNAP_VERSION = "1.0.0";
 export const FORMULA_VERSION = "SII v1.0.0";
 
-// Static fallback — used before first onCronjob refresh
-export const STATIC_STABLECOIN_CONTRACTS: Record<string, string> = {
+export const STABLECOIN_CONTRACTS: Record<string, string> = {
   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48": "usdc",
   "0xdac17f958d2ee523a2206206994597c13d831ec7": "usdt",
   "0x6b175474e89094c44da98b954eedeac495271d0f": "dai",

@@ -6,16 +6,17 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspace @basis-protocol/snap run build && yarn workspace @basis-protocol/site run build",
+    "build": "yarn workspaces foreach --all --topological-dev run build",
     "build:snap": "yarn workspace @basis-protocol/snap run build",
     "start": "yarn workspace @basis-protocol/snap run start",
     "test": "yarn workspace @basis-protocol/snap run test",
-    "lint": "yarn workspace @basis-protocol/snap run lint && yarn workspace @basis-protocol/site run lint"
+    "lint": "yarn workspaces foreach --all run lint"
   },
   "devDependencies": {
     "typescript": "~5.3.3"
   },
   "engines": {
     "node": ">=18.6.0"
-  }
+  },
+  "packageManager": "yarn@3.2.1"
 }
