@@ -82,7 +82,7 @@ yarn test        # run unit tests (decoder, grade formatting, etc.)
 yarn build:snap  # production bundle for npm publish
 ```
 
-**API base:** `https://basis-deploy-guide.replit.app`
+**API base:** `https://basisprotocol.xyz`
 
 ## Packages
 

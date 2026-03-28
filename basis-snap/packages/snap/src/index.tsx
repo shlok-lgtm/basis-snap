@@ -187,8 +187,8 @@ export const onInstall: OnInstallHandler = async () => {
           <Divider />
           <Text>Your risk dashboard is in the Snaps menu.</Text>
           <Divider />
-          <Link href="https://basis-deploy-guide.replit.app">
-            View methodology → basis-deploy-guide.replit.app
+          <Link href="https://basisprotocol.xyz">
+            View methodology → basisprotocol.xyz
           </Link>
           <Divider />
           <Text>

@@ -1,4 +1,4 @@
-export const API_BASE = "https://basis-deploy-guide.replit.app";
+export const API_BASE = "https://basisprotocol.xyz";
 export const API_TIMEOUT = 10_000;
 export const MAX_RETRIES = 2;
 export const RETRY_DELAY = 1_000;
