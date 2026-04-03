@@ -77,6 +77,16 @@ export interface WalletHistory {
   history: WalletHistoryEntry[];
 }
 
+export interface PsiScore {
+  score: number;
+  grade: string;
+}
+
+export interface CqiResult {
+  score: number;
+  grade: string;
+}
+
 export interface HealthResponse {
   status: string;
 }

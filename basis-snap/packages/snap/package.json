@@ -1,6 +1,6 @@
 {
   "name": "@basis-protocol/snap",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Basis Risk Intelligence MetaMask Snap",
   "main": "dist/bundle.js",
   "repository": {

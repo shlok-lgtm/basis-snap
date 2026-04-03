@@ -9,6 +9,7 @@ import {
   fetchScores,
   fetchWalletProfile,
   fetchWalletHistory,
+  fetchPsiScore,
 } from "./api";
 import {
   getCachedScores,
@@ -21,12 +22,13 @@ import {
 } from "./cache";
 import {
   STABLECOIN_CONTRACTS,
+  PROTOCOL_CONTRACTS,
   SCORES_STALE_MAX_MS,
 } from "./config";
 import { decodeERC20Transfer } from "./decoder";
 import { TransactionInsights } from "./ui/TransactionInsights";
 import { HomePage } from "./ui/HomePage";
-import type { StablecoinScore, WalletProfile, ScoresResponse } from "./types";
+import type { StablecoinScore, WalletProfile, ScoresResponse, PsiScore } from "./types";
 
 function findStablecoinId(address: string): string | undefined {
   return STABLECOIN_CONTRACTS[address.toLowerCase()];
@@ -100,6 +102,35 @@ export const onTransaction: OnTransactionHandler = async ({
     }
   }
 
+  // Protocol detection + PSI fetch
+  const protocolSlug = PROTOCOL_CONTRACTS[toAddress.toLowerCase()];
+  let psiData: PsiScore | null = null;
+  let protocolName: string | undefined;
+
+  if (protocolSlug) {
+    protocolName = protocolSlug
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+    psiData = await fetchPsiScore(protocolSlug);
+  }
+
+  // Build wallet holdings list for CQI computation
+  const walletHoldings: Array<{ symbol: string; siiScore: number | null }> = [];
+  if (scores && walletRisk) {
+    for (const holding of walletRisk.holdings) {
+      walletHoldings.push({
+        symbol: holding.symbol,
+        siiScore: holding.sii_score,
+      });
+    }
+  } else if (assetScore) {
+    // At minimum include the asset being transacted
+    walletHoldings.push({
+      symbol: assetScore.symbol,
+      siiScore: assetScore.score,
+    });
+  }
+
   const criticalCondition =
     (assetScore !== null && assetScore.score < criticalThreshold) ||
     (walletRisk !== null && walletRisk.risk.risk_score < criticalThreshold);
@@ -114,6 +145,9 @@ export const onTransaction: OnTransactionHandler = async ({
       warningThreshold={warningThreshold}
       cachedAt={cachedAt}
       apiUnavailable={apiUnavailable}
+      protocolName={protocolName}
+      psiScore={psiData}
+      walletHoldings={walletHoldings}
     />
   );
 
@@ -177,6 +211,12 @@ export const onInstall: OnInstallHandler = async () => {
           <Text>What this Snap does:</Text>
           <Text>
             {"• Shows stablecoin integrity scores (SII) when you transact"}
+          </Text>
+          <Text>
+            {"• Shows protocol safety index (PSI) for known DeFi protocols"}
+          </Text>
+          <Text>
+            {"• Computes composed risk (CQI) when both SII and PSI are available"}
           </Text>
           <Text>
             {"• Profiles counterparty wallet risk exposure"}

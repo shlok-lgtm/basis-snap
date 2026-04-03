@@ -6,7 +6,9 @@ import {
   Row,
   Text,
 } from "@metamask/snaps-sdk/jsx";
-import type { StablecoinScore, WalletProfile } from "../types";
+import type { StablecoinScore, WalletProfile, PsiScore, CqiResult } from "../types";
+import { computeCqi } from "../api";
+import { CQI_WARNING_GAP } from "../config";
 import {
   formatCoverageQuality,
   formatScore,
@@ -23,6 +25,9 @@ type Props = {
   warningThreshold: number;
   cachedAt?: number;
   apiUnavailable?: boolean;
+  protocolName?: string;
+  psiScore?: PsiScore | null;
+  walletHoldings?: Array<{ symbol: string; siiScore: number | null }>;
 };
 
 export function TransactionInsights({
@@ -32,14 +37,33 @@ export function TransactionInsights({
   warningThreshold,
   cachedAt,
   apiUnavailable,
+  protocolName,
+  psiScore,
+  walletHoldings,
 }: Props) {
   const showCachedBanner = cachedAt !== undefined;
+
+  // Compute CQI entries for all scored holdings when PSI is available
+  const cqiEntries: Array<{ symbol: string; sii: number; cqi: CqiResult; gap: number }> = [];
+  if (psiScore && walletHoldings) {
+    for (const h of walletHoldings) {
+      if (h.siiScore !== null) {
+        const cqi = computeCqi(h.siiScore, psiScore.score);
+        cqiEntries.push({
+          symbol: h.symbol,
+          sii: h.siiScore,
+          cqi,
+          gap: h.siiScore - cqi.score,
+        });
+      }
+    }
+  }
 
   return (
     <Box>
       <Box>
         <Text>BASIS RISK INTELLIGENCE</Text>
-        <Text>v1.0.0</Text>
+        <Text>v2.0.0</Text>
       </Box>
       <Divider />
 
@@ -146,8 +170,40 @@ export function TransactionInsights({
         <Text>Counterparty not in Basis index</Text>
       )}
 
+      {psiScore && protocolName && (
+        <Box>
+          <Divider />
+          <Heading>Protocol: {protocolName}</Heading>
+          <Row label="PSI Score">
+            <Text>{formatScoreWithGrade(psiScore.score, psiScore.grade)}</Text>
+          </Row>
+        </Box>
+      )}
+
+      {cqiEntries.length > 0 && (
+        <Box>
+          <Divider />
+          <Heading>Composed Risk (CQI)</Heading>
+          {cqiEntries.map((entry) => (
+            <Box>
+              <Row label={`${entry.symbol} CQI`}>
+                <Text>
+                  {`SII ${formatScore(entry.sii)} → CQI ${formatScoreWithGrade(entry.cqi.score, entry.cqi.grade)}`}
+                </Text>
+              </Row>
+              {entry.gap > CQI_WARNING_GAP && (
+                <Warning
+                  severity="warning"
+                  message={`Protocol risk is reducing ${entry.symbol} quality by ${entry.gap.toFixed(0)} points`}
+                />
+              )}
+            </Box>
+          ))}
+        </Box>
+      )}
+
       <Divider />
-      <Text>basisprotocol.xyz | {`SII v1.0.0`}</Text>
+      <Text>basisprotocol.xyz | {`SII v1.0.0 · CQI v1.0.0`}</Text>
     </Box>
   );
 }
