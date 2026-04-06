@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const SNAP_ID = "npm:@basis-protocol/snap";
-const SNAP_VERSION = "^1.0.0";
+const SNAP_VERSION = "^2.0.0";
 
 declare global {
   interface Window {

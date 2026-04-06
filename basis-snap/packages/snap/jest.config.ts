@@ -14,6 +14,7 @@ const config: Config = {
         tsconfig: {
           jsx: "react-jsx",
           jsxImportSource: "@metamask/snaps-sdk",
+          types: ["@metamask/snaps-sdk", "jest"],
         },
       },
     ],

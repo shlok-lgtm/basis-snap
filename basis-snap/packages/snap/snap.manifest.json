@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Asset quality scores and wallet risk profiles at the point of transaction. The first wallet plugin that scores assets for quality, not addresses for fraud.",
   "proposedName": "Basis Risk Intelligence",
   "repository": {
@@ -7,7 +7,7 @@
     "url": "https://github.com/basis-protocol/basis-snap.git"
   },
   "source": {
-    "shasum": "vYEhPiRWD/vCcELLaP1U5YlD0/x3cJO63yVUb8SqXJA=",
+    "shasum": "Lrdnbz4YRRV9zkCW60qKXC8Zs4HZzgxlCQkQpkodFjU=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
@@ -16,6 +16,9 @@
         "registry": "https://registry.npmjs.org/"
       }
     }
+  },
+  "initialConnections": {
+    "https://basisprotocol.xyz": {}
   },
   "initialPermissions": {
     "endowment:transaction-insight": {
