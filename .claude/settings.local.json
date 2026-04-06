@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc:*)",
+      "Bash(npx mm-snap:*)",
+      "Bash(node:*)",
+      "Bash(yarn install:*)",
+      "Bash(corepack enable:*)",
+      "Bash(COREPACK_ENABLE_STRICT=0 corepack yarn install)",
+      "Bash(COREPACK_ENABLE_STRICT=0 corepack yarn:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(export PATH=\"$HOME/.local/bin:$PATH\")",
+      "Bash(yarn build:clean)",
+      "Bash(yarn test:*)",
+      "Bash(yarn add:*)",
+      "Bash(yarn workspace:*)",
+      "Bash(yarn eval:*)",
+      "Bash(npm whoami:*)",
+      "Bash(npm publish:*)",
+      "Bash(npm view:*)",
+      "Bash(npm version:*)",
+      "Bash(git add:*)",
+      "Bash(git remote:*)"
+    ]
+  }
+}
